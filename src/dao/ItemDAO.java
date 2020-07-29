@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAO {
-    public static List<Item> findAllItems(){
+    public  List<Item> findAllItems(){
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             Statement stm = connection.createStatement();
@@ -28,7 +28,7 @@ public class ItemDAO {
         }
     }
 
-    public static Item findItem(String itemCode){
+    public  Item findItem(String itemCode){
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
@@ -47,7 +47,7 @@ public class ItemDAO {
         }
     }
 
-    public static boolean saveItem(Item item){
+    public  boolean saveItem(Item item){
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstm = connection.prepareStatement("INSERT INTO Item VALUES (?,?,?,?)");
@@ -61,8 +61,7 @@ public class ItemDAO {
             return false;
         }
     }
-
-    public static boolean updateItem(Item item){
+    public boolean updateItem(Item item){
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
@@ -77,7 +76,7 @@ public class ItemDAO {
         }
     }
 
-    public static boolean deleteItem(String itemCode){
+    public boolean deleteItem(String itemCode){
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstm = connection.prepareStatement("DELETE FROM Item WHERE code=?");
@@ -89,7 +88,7 @@ public class ItemDAO {
         }
     }
 
-    public static String getLastItemCode() {
+    public  String getLastItemCode() {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             Statement stm = connection.createStatement();
