@@ -1,4 +1,5 @@
-package entity.entity;
+package entity;
 
 public interface SuperEntity {
+
 }

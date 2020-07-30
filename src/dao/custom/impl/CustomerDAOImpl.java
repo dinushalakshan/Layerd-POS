@@ -9,16 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
-
     @Override
     public String getLastCustomerId() {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Customer ORDER BY id DESC LIMIT 1");
-            if (!rst.next()) {
+            if (rst.next()){
                 return null;
-            } else {
+            }else {
                 return rst.getString(1);
             }
         } catch (SQLException throwables) {
@@ -32,9 +31,10 @@ public class CustomerDAOImpl implements CustomerDAO {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             Statement stm = connection.createStatement();
+            //Here ResultSet act like as Circular Doubly Linked List
             ResultSet rst = stm.executeQuery("SELECT * FROM Customer");
             List<Customer> customers = new ArrayList<>();
-            while (rst.next()) {
+            while (rst.next()){
                 customers.add(new Customer(rst.getString(1),
                         rst.getString(2),
                         rst.getString(3)));
@@ -53,7 +53,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Customer WHERE id=?");
             pstm.setObject(1, key);
             ResultSet rst = pstm.executeQuery();
-            if (rst.next()) {
+            if (rst.next()){
                 return new Customer(rst.getString(1),
                         rst.getString(2),
                         rst.getString(3));

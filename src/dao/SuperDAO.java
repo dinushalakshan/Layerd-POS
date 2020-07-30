@@ -1,19 +1,11 @@
 package dao;
 
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import entity.SuperEntity;
 
 import java.io.Serializable;
 import java.util.List;
 
-public interface SuperDAO<T extends SuperEntity,ID extends Serializable> {
+public interface SuperDAO{
 
-    List<T> findAll();
-
-    T find(ID key);
-
-    boolean save(T entity);
-
-    boolean update(T entity);
-
-    boolean delete(ID key);
 }

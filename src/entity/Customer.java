@@ -1,10 +1,9 @@
 package entity;
 
-import entity.entity.SuperEntity;
-
 import java.io.Serializable;
 
 public class Customer implements SuperEntity {
+
     private String id;
     private String name;
     private String address;

@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -147,6 +148,11 @@ public class MainFormController implements Initializable {
                 
             }
         }
-    }   
-    
+    }
+
+    public void btnRestore_OnAction(ActionEvent event) {
+    }
+
+    public void btnBackup_OnAction(ActionEvent event) {
+    }
 }

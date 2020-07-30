@@ -6,6 +6,7 @@
 package controller;
 
 import business.BusinessLogic;
+import db.DBConnection;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -25,6 +26,10 @@ import util.CustomerTM;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;

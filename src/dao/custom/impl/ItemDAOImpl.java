@@ -9,15 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAOImpl implements ItemDAO {
-
+    @Override
     public String getLastItemCode() {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Item ORDER BY code DESC LIMIT 1");
-            if (!rst.next()) {
+            if (rst.next()){
                 return null;
-            } else {
+            }else {
                 return rst.getString(1);
             }
         } catch (SQLException throwables) {
@@ -33,7 +33,7 @@ public class ItemDAOImpl implements ItemDAO {
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery("SELECT * FROM Item");
             List<Item> items = new ArrayList<>();
-            while (rst.next()) {
+            while (rst.next()){
                 items.add(new Item(rst.getString(1),
                         rst.getString(2),
                         rst.getBigDecimal(3),
@@ -53,7 +53,7 @@ public class ItemDAOImpl implements ItemDAO {
             PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
             pstm.setObject(1, key);
             ResultSet rst = pstm.executeQuery();
-            if (rst.next()) {
+            if (rst.next()){
                 return new Item(rst.getString(1),
                         rst.getString(2),
                         rst.getBigDecimal(3),

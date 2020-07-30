@@ -11,8 +11,8 @@ public class OrderDetailPK implements Serializable {
     }
 
     public OrderDetailPK(String orderId, String itemCode) {
-        this.setOrderId(orderId);
-        this.setItemCode(itemCode);
+        this.orderId = orderId;
+        this.itemCode = itemCode;
     }
 
     public String getOrderId() {

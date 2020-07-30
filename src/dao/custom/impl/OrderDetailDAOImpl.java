@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetailDAOImpl implements OrderDetailDAO {
-
     @Override
     public List<OrderDetail> findAll() {
         try {
@@ -36,7 +35,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstm = connection.prepareStatement("SELECT * FROM `OrderDetail` WHERE orderId=? AND itemCode=?");
-            OrderDetailPK orderDetailPK = key;
+            OrderDetailPK orderDetailPK = (OrderDetailPK) key;
             pstm.setObject(1, orderDetailPK.getOrderId());
             pstm.setObject(2, orderDetailPK.getItemCode());
             ResultSet rst = pstm.executeQuery();
@@ -73,7 +72,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
     public boolean update(OrderDetail orderDetail) {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pstm = connection.prepareStatement("UPDATE OrderDetail SET qty=?, unitPrice=? WHERE orderId=? AND itemCode=?");
+            PreparedStatement pstm = connection.prepareStatement("UPDATE `OrderDetail` SET qty=?, unitPrice=? WHERE orderId=? AND itemCode=?");
             pstm.setObject(3, orderDetail.getOrderDetailPK().getOrderId());
             pstm.setObject(4, orderDetail.getOrderDetailPK().getItemCode());
             pstm.setObject(1, orderDetail.getQty());
@@ -86,11 +85,12 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
     }
 
     @Override
-    public boolean delete(OrderDetailPK orderDetailPK) {
+    public boolean delete(OrderDetailPK key) {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement pstm = connection.
                     prepareStatement("DELETE FROM `OrderDetail` WHERE orderId=? AND itemCode=?");
+            OrderDetailPK orderDetailPK = (OrderDetailPK) key;
             pstm.setObject(1, orderDetailPK.getOrderId());
             pstm.setObject(2, orderDetailPK.getItemCode());
             return pstm.executeUpdate() > 0;

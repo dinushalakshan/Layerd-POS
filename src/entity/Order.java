@@ -1,13 +1,12 @@
 package entity;
 
-import entity.entity.SuperEntity;
-
 import java.io.Serializable;
 import java.sql.Date;
 
-public class Order implements  SuperEntity {
+public class Order implements SuperEntity {
 
     private String id;
+    // Here is use java.sql.Date
     private Date date;
     private String customerId;
 
