@@ -1,9 +1,11 @@
 package entity;
 
+import entity.entity.SuperEntity;
+
 import java.io.Serializable;
 import java.sql.Date;
 
-public class Order implements Serializable {
+public class Order implements  SuperEntity {
 
     private String id;
     private Date date;
