@@ -19,39 +19,19 @@ import util.OrderDetailTM;
 import util.OrderTM;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessLogic {
-    public static String getNewCustomerId() {
-        CustomerDAO customerDAO = new CustomerDAOImpl();
-        String lastCustomerId = customerDAO.getLastCustomerId();
-        if (lastCustomerId == null) {
-            return "C001";
-        } else {
-            int maxId = Integer.parseInt(lastCustomerId.replace("C", ""));
-            maxId = maxId + 1;
-            String id = "";
-            if (maxId < 10) {
-                id = "C00" + maxId;
-            } else if (maxId < 100) {
-                id = "C0" + maxId;
-            } else {
-                id = "C" + maxId;
-            }
-            return id;
-        }
-    }
 
-    public static String getNewItemCode() {
-        String lastItemCode = new ItemDAOImpl().getLastItemCode();
-        if (lastItemCode == null) {
+    public static String getNewItemCode(){
+        ItemDAO itemDAO = new ItemDAOImpl();
+        String lastItemCode = itemDAO.getLastItemID();
+        if (lastItemCode == null){
             return "I001";
-        } else {
-            int maxId = Integer.parseInt(lastItemCode.replace("I", ""));
+        }else{
+            int maxId=  Integer.parseInt(lastItemCode.replace("I",""));
             maxId = maxId + 1;
             String id = "";
             if (maxId < 10) {
@@ -65,119 +45,150 @@ public class BusinessLogic {
         }
     }
 
-    public static String getNewOrderId() {
-        String lastOrderId = new OrderDAOImpl().getLastOrderId();
-        if (lastOrderId == null) {
-            return "OD001";
-        } else {
-            int maxId = Integer.parseInt(lastOrderId.replace("OD", ""));
+    public static String getNewCustomerId(){
+        CustomerDAO customerDAO = new CustomerDAOImpl();
+        String lastCustomerId = customerDAO.getLastCustomerID();
+        if (lastCustomerId == null){
+            return "C001";
+        }else{
+           int maxId=  Integer.parseInt(lastCustomerId.replace("C",""));
             maxId = maxId + 1;
             String id = "";
             if (maxId < 10) {
-                id = "OD00" + maxId;
+                id = "C00" + maxId;
             } else if (maxId < 100) {
-                id = "OD0" + maxId;
+                id = "C0" + maxId;
             } else {
-                id = "OD" + maxId;
+                id = "C" + maxId;
             }
             return id;
         }
     }
 
-    public static List<CustomerTM> getAllCustomers() {
+    public static List<CustomerTM> getAllCustomers(){
         CustomerDAO customerDAO = new CustomerDAOImpl();
         List<Customer> allCustomers = customerDAO.findAllCustomers();
-        List<CustomerTM> customers = new ArrayList<>();
-        for (Customer customer : allCustomers) {
-            customers.add(new CustomerTM(customer.getId(), customer.getName(), customer.getAddress()));
+        List<CustomerTM> customerTMS = new ArrayList<>();
+
+        for (Customer customerTM : allCustomers) {
+            customerTMS.add(new CustomerTM(customerTM.getId(),customerTM.getName(),customerTM.getAddress()));
         }
-        return customers;
+        return customerTMS;
     }
 
-    public static boolean saveCustomer(String id, String name, String address) {
+    public static boolean saveCustomer(String id, String name, String address){
         CustomerDAO customerDAO = new CustomerDAOImpl();
-        return customerDAO.saveCustomer(new Customer(id, name, address));
+        return customerDAO.addCustomer(new Customer(id, name, address));
     }
 
-    public static boolean deleteCustomer(String customerId) {
+    public static boolean deleteCustomer(String customerId){
         CustomerDAO customerDAO = new CustomerDAOImpl();
-        return  customerDAO.deleteCustomer(customerId);
+        return customerDAO.deleteCustomer(customerId);
     }
 
-    public static boolean updateCustomer(String name, String address, String customerId) {
+    public static boolean updateCustomer(String name, String address, String customerId){
         CustomerDAO customerDAO = new CustomerDAOImpl();
-        return customerDAO.updateCustomer(new Customer(customerId, name, address));
+        return customerDAO.updateCustomer(new Customer(name,address,customerId));
     }
 
-    public static List<ItemTM> getAllItems() {
-        List<Item> allItems = new ItemDAOImpl().findAllItems();
-        List<ItemTM> items = new ArrayList<>();
-        for (Item item : allItems) {
-            items.add(new ItemTM(item.getCode(), item.getDescription(), item.getQtyOnHand(),
-                    item.getUnitPrice().doubleValue()));
+    public static List<ItemTM> getAllItems(){
+        ItemDAO itemDAO = new ItemDAOImpl();
+        List<Item> allItems = itemDAO.findAllItems();
+        List<ItemTM> itemTMS = new ArrayList<>();
+
+        for (Item allItem : allItems) {
+            itemTMS.add(new ItemTM(allItem.getCode(),allItem.getDescription(),allItem.getUnitPrice().doubleValue(),allItem.getQtyOnHand()));
         }
-        return items;
+        return itemTMS;
     }
 
-    public static boolean saveItem(String code, String description, int qtyOnHand, double unitPrice) {
-        return new ItemDAOImpl().saveItem(new Item(code, description, BigDecimal.valueOf(unitPrice), qtyOnHand));
+    public static boolean saveItem(String code, String description, int qtyOnHand, BigDecimal unitPrice){
+        ItemDAO itemDAO = new ItemDAOImpl();
+        return itemDAO.addItem(new Item(code,description,unitPrice,qtyOnHand));
     }
 
-    public static boolean deleteItem(String itemCode) {
-        return new ItemDAOImpl().deleteItem(itemCode);
+    public static boolean deleteItem(String itemCode){
+        ItemDAO itemDAO = new ItemDAOImpl();
+        return itemDAO.deleteItem(itemCode);
     }
 
-    public static boolean updateItem(String description, int qtyOnHand, double unitPrice, String itemCode) {
-        return new ItemDAOImpl().updateItem(new Item(itemCode, description,
-                BigDecimal.valueOf(unitPrice), qtyOnHand));
+    public static boolean updateItem(String description, int qtyOnHand, BigDecimal unitPrice, String itemCode){
+        ItemDAO itemDAO = new ItemDAOImpl();
+        return itemDAO.updateItem(new Item(itemCode,description,unitPrice,qtyOnHand));
     }
 
-    public static boolean placeOrder(OrderTM order, List<OrderDetailTM> orderDetails) {
+    public static boolean placeOrder(OrderTM order, List<OrderDetailTM> orderDetails){
         Connection connection = DBConnection.getInstance().getConnection();
+
         try {
             connection.setAutoCommit(false);
-            boolean result = new OrderDAOImpl().saveOrder(new Order(order.getOrderId(),
-                    Date.valueOf(order.getOrderDate()),
-                    order.getCustomerId()));
-            if (!result) {
+
+            OrderDAO orderDAO = new OrderDAOImpl();
+            boolean b = orderDAO.addOrder(new Order(order.getOrderId(), Date.valueOf(order.getOrderDate()), order.getCustomerId()));
+            if(!b){
                 connection.rollback();
                 return false;
             }
+
             for (OrderDetailTM orderDetail : orderDetails) {
-                result = new OrderDetailDAOImpl().saveOrderDetail(new OrderDetail(
-                        order.getOrderId(), orderDetail.getCode(),
-                        orderDetail.getQty(), BigDecimal.valueOf(orderDetail.getUnitPrice())
-                ));
-                if (!result){
+
+                OrderDetailDAO orderDetailDAO = new OrderDetailDAOImpl();
+                b = orderDetailDAO.addOrderDetail(new OrderDetail(order.getOrderId(), orderDetail.getCode(), orderDetail.getQty(), BigDecimal.valueOf(orderDetail.getUnitPrice())));
+                if(!b){
                     connection.rollback();
                     return false;
                 }
-                Item item = new ItemDAOImpl().findItem(orderDetail.getCode());
+
+                ItemDAO itemDAO = new ItemDAOImpl();
+
+                Item item = itemDAO.findItem(orderDetail.getCode());
                 item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getQty());
-                result = new ItemDAOImpl().updateItem(item);
-                if (!result){
+
+                b = itemDAO.updateItem(new Item(orderDetail.getCode(), orderDetail.getDescription(), BigDecimal.valueOf(orderDetail.getUnitPrice()), item.getQtyOnHand()));
+
+                if(!b){
                     connection.rollback();
                     return false;
                 }
+
             }
+
+
+
             connection.commit();
             return true;
-        } catch (Throwable throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
+
             try {
                 connection.rollback();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return false;
-        } finally {
+        }finally {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }
+
     }
 
+    public static String autoGeneratePlaceOrderID(){
+        OrderDetailDAO orderDetailDAO = new OrderDetailDAOImpl();
+        String oldID = orderDetailDAO.getLastOrderDetailID();
+        oldID = oldID.substring(2, 5);
 
+        int newID = Integer.parseInt(oldID) + 1;
+
+        if (newID < 10) {
+            return  "OD00" + newID;
+        } else if (newID < 100) {
+            return  "OD0" + newID;
+        } else {
+            return  "OD" + newID;
+        }
+    }                                                         
 }
