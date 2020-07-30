@@ -8,10 +8,13 @@ public class CustomEntity implements SuperEntity {
   private String customerName;
   private Date orderDate;
   private String customerId;
+  private int total;
 
-  public CustomEntity() {
+
+  public CustomEntity(){
+
   }
-  // Join Query Fields walata adalawa constructor fields dala, Query ganata constructors hadanawa
+
   public CustomEntity(String orderId, String customerName, Date orderDate) {
     this.orderId = orderId;
     this.customerName = customerName;
@@ -24,6 +27,13 @@ public class CustomEntity implements SuperEntity {
     this.customerId = customerId;
   }
 
+  public CustomEntity(String orderId, String customerName, Date orderDate, String customerId, int total) {
+    this.orderId = orderId;
+    this.customerName = customerName;
+    this.orderDate = orderDate;
+    this.customerId = customerId;
+    this.total = total;
+  }
   public String getOrderId() {
     return orderId;
   }
@@ -54,5 +64,13 @@ public class CustomEntity implements SuperEntity {
 
   public void setCustomerId(String customerId) {
     this.customerId = customerId;
+  }
+
+  public int getTotal() {
+    return total;
+  }
+
+  public void setTotal(int total) {
+    this.total = total;
   }
 }

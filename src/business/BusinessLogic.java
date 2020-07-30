@@ -114,7 +114,7 @@ public class BusinessLogic {
         List<ItemTM> items = new ArrayList<>();
         for (Item item : allItems) {
             items.add(new ItemTM(item.getCode(), item.getDescription(), item.getQtyOnHand(),
-                item.getUnitPrice().doubleValue()));
+                    item.getUnitPrice().doubleValue()));
         }
         return items;
     }
@@ -132,7 +132,7 @@ public class BusinessLogic {
     public static boolean updateItem(String description, int qtyOnHand, double unitPrice, String itemCode) {
         ItemDAO itemDAO = DAOFactory.getInstance().getDAO(DAOType.ITEM);
         return itemDAO.update(new Item(itemCode, description,
-            BigDecimal.valueOf(unitPrice), qtyOnHand));
+                BigDecimal.valueOf(unitPrice), qtyOnHand));
     }
 
     public static boolean placeOrder(OrderTM order, List<OrderDetailTM> orderDetails) {
@@ -143,16 +143,16 @@ public class BusinessLogic {
         try {
             connection.setAutoCommit(false);
             boolean result = orderDAO.save(new Order(order.getOrderId(),
-                Date.valueOf(order.getOrderDate()),
-                order.getCustomerId()));
+                    Date.valueOf(order.getOrderDate()),
+                    order.getCustomerId()));
             if (!result) {
                 connection.rollback();
                 return false;
             }
             for (OrderDetailTM orderDetail : orderDetails) {
                 result = orderDetailDAO.save(new OrderDetail(
-                    order.getOrderId(), orderDetail.getCode(),
-                    orderDetail.getQty(), BigDecimal.valueOf(orderDetail.getUnitPrice())
+                        order.getOrderId(), orderDetail.getCode(),
+                        orderDetail.getQty(), BigDecimal.valueOf(orderDetail.getUnitPrice())
                 ));
                 if (!result){
                     connection.rollback();
