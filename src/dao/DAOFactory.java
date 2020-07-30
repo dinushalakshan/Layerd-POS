@@ -20,6 +20,8 @@ public class DAOFactory {
         return (daoFactory == null) ? daoFactory = new DAOFactory(): daoFactory;
     }
 
+
+
     public SuperDAO getDAO(int daoType){
         switch (daoType){
             case 0:
