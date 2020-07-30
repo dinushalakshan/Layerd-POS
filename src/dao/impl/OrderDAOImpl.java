@@ -2,88 +2,105 @@ package dao.impl;
 
 import dao.OrderDAO;
 import db.DBConnection;
-import entity.Customer;
-import entity.Item;
 import entity.Order;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAOImpl implements OrderDAO {
 
-    public List<Order> findAllOrders(){
+    public  String getLastOrderId() {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from `Order`");
-            List<Order> orderList = new ArrayList<>();
-            while (resultSet.next()){
-                orderList.add(new Order(resultSet.getString(1),
-                       resultSet.getDate(2),
-                        resultSet.getString(3)));
+            Statement stm = connection.createStatement();
+            ResultSet rst = stm.executeQuery("SELECT * FROM `Order` ORDER BY id DESC LIMIT 1");
+            if (!rst.next()){
+                return null;
+            }else{
+                return rst.getString(1);
             }
-            return orderList;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Order> findAll() {
+        try {
+            Connection connection = DBConnection.getInstance().getConnection();
+            Statement stm = connection.createStatement();
+            ResultSet rst = stm.executeQuery("SELECT * FROM `Order`");
+            List<Order> orders = new ArrayList<>();
+            while (rst.next()) {
+                orders.add(new Order(rst.getString(1),
+                        rst.getDate(2),
+                        rst.getString(3)));
+            }
+            return orders;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;
         }
     }
 
-    public Order findOrder(String id){
+    @Override
+    public Order find(String key) {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from `Order` where id = ?");
-            preparedStatement.setObject(1,id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if(resultSet.next()){
-                return new Order(resultSet.getString(1),
-                        resultSet.getDate(2),
-                        resultSet.getString(3));
+            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM `Order` WHERE id=?");
+            pstm.setObject(1, key);
+            ResultSet rst = pstm.executeQuery();
+            if (rst.next()) {
+                return new Order(rst.getString(1),
+                        rst.getDate(2),
+                        rst.getString(3));
             }
+            return null;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;
         }
-        return null;
     }
 
-    public boolean addOrder(Order order){
+    @Override
+    public boolean save(Order order) {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("insert into `Order` values (?,?,?)");
-            preparedStatement.setObject(1,order.getId());
-            preparedStatement.setObject(2,order.getDate());
-            preparedStatement.setObject(3,order.getCustomerId());
-            return preparedStatement.executeUpdate() > 0;
+            PreparedStatement pstm = connection.prepareStatement("INSERT INTO `Order` VALUES (?,?,?)");
+            pstm.setObject(1, order.getId());
+            pstm.setObject(2, order.getDate());
+            pstm.setObject(3, order.getCustomerId());
+            return pstm.executeUpdate() > 0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;
         }
     }
 
-    public boolean updateOrder(Order order){
+    @Override
+    public boolean update(Order order) {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("update `Order` set date =  ?,customerId = ? where id = ?");
-            preparedStatement.setObject(1,order.getDate());
-            preparedStatement.setObject(2,order.getCustomerId());
-            preparedStatement.setObject(3,order.getId());
-            return preparedStatement.executeUpdate() > 0;
+            PreparedStatement pstm = connection.prepareStatement("UPDATE Order SET date=?, customerId=? WHERE id=?");
+            pstm.setObject(3, order.getId());
+            pstm.setObject(1, order.getDate());
+            pstm.setObject(2, order.getCustomerId());
+            return pstm.executeUpdate() > 0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;
         }
     }
 
-    public boolean deleteOrder(String id){
+    @Override
+    public boolean delete(String key) {
         try {
             Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement("delete from `Order` where id = ?");
-            preparedStatement.setObject(1,id);
-            return preparedStatement.executeUpdate() > 0;
+            PreparedStatement pstm = connection.prepareStatement("DELETE FROM Order WHERE id=?");
+            pstm.setObject(1, key);
+            return pstm.executeUpdate() > 0;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             return false;

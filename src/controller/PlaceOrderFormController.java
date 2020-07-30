@@ -1,10 +1,8 @@
 package controller;
 
-import business.BusinessLogic;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import db.DBConnection;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,10 +23,6 @@ import util.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
