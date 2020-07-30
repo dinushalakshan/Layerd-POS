@@ -11,25 +11,47 @@ import java.sql.SQLException;
 
 public class QueryDAOImpl implements QueryDAO {
 
+
   @Override
   public CustomEntity getOrderDetail(String orderId) {
-    Connection connection = DBConnection.getInstance().getConnection();
-    PreparedStatement pstm = null;
     try {
-      pstm = connection.prepareStatement("SELECT c.id,c.name ,o.id FROM'Order'o\n" +
-              "INNER JOIN Customer c on o.customerId =c.Id\n" +
+      Connection connection = DBConnection.getInstance().getConnection();
+      PreparedStatement pstm = connection.prepareStatement("SELECT  o.id, c.name, o.date FROM `Order` o\n" +
+              "INNER JOIN Customer c on o.customerId = c.id\n" +
               "WHERE o.id=?");
       pstm.setObject(1,orderId);
       ResultSet rst = pstm.executeQuery();
-    } catch (SQLException e) {
-      e.printStackTrace();
+      if (rst.next()){
+        return new CustomEntity(rst.getString(1),
+                rst.getString(2),
+                rst.getString(3));
+      }
+      return null;
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+      return null;
     }
-    return null;
   }
-
 
   @Override
   public CustomEntity getOrderDetail2(String orderId) {
-    Connection.
+    try {
+      Connection connection = DBConnection.getInstance().getConnection();
+      PreparedStatement pstm = connection.
+              prepareStatement("SELECT  c.id, c.name, o.id FROM `Order` o\n" +
+                      "INNER JOIN Customer c on o.customerId = c.id\n" +
+                      "WHERE o.id=?");
+      pstm.setObject(1,orderId);
+      ResultSet rst = pstm.executeQuery();
+      if (rst.next()){
+        return new CustomEntity(rst.getString(1),
+                rst.getString(2),
+                rst.getString(3));
+      }
+      return null;
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+      return null;
+    }
   }
 }
