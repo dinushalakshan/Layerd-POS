@@ -5,50 +5,49 @@ import java.sql.Date;
 
 public class Order implements SuperEntity {
 
-    private String id;
-    // Here is use java.sql.Date
-    private Date date;
-    private String customerId;
+  private String id;
+  private Date date;
+  private String customerId;
 
-    public Order() {
-    }
+  public Order() {
+  }
 
-    public Order(String id, Date date, String customerId) {
-        this.id = id;
-        this.date = date;
-        this.customerId = customerId;
-    }
+  public Order(String id, Date date, String customerId) {
+    this.id = id;
+    this.date = date;
+    this.customerId = customerId;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public Date getDate() {
-        return date;
-    }
+  public Date getDate() {
+    return date;
+  }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+  public void setDate(Date date) {
+    this.date = date;
+  }
 
-    public String getCustomerId() {
-        return customerId;
-    }
+  public String getCustomerId() {
+    return customerId;
+  }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+  public void setCustomerId(String customerId) {
+    this.customerId = customerId;
+  }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id='" + id + '\'' +
-                ", date=" + date +
-                ", customerId='" + customerId + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Order{" +
+        "id='" + id + '\'' +
+        ", date=" + date +
+        ", customerId='" + customerId + '\'' +
+        '}';
+  }
 }

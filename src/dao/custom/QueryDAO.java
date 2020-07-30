@@ -1,9 +1,11 @@
 package dao.custom;
 
 import dao.SuperDAO;
-import entity.entity.CustomerEntity;
+import entity.CustomEntity;
 
-public interface QueryDAO extends SuperDAO{
+public interface QueryDAO extends SuperDAO {
 
-    CustomerEntity getOrderDetail();
+  CustomEntity getOrderDetail(String orderId);
+  CustomEntity getOrderDetail2(String orderId);
+
 }

@@ -4,38 +4,38 @@ import java.io.Serializable;
 
 public class OrderDetailPK implements Serializable {
 
-    private String orderId;
-    private String itemCode;
+  private String orderId;
+  private String itemCode;
 
-    public OrderDetailPK() {
-    }
+  public OrderDetailPK() {
+  }
 
-    public OrderDetailPK(String orderId, String itemCode) {
-        this.orderId = orderId;
-        this.itemCode = itemCode;
-    }
+  public OrderDetailPK(String orderId, String itemCode) {
+    this.orderId = orderId;
+    this.itemCode = itemCode;
+  }
 
-    public String getOrderId() {
-        return orderId;
-    }
+  public String getOrderId() {
+    return orderId;
+  }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+  public void setOrderId(String orderId) {
+    this.orderId = orderId;
+  }
 
-    public String getItemCode() {
-        return itemCode;
-    }
+  public String getItemCode() {
+    return itemCode;
+  }
 
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
-    }
+  public void setItemCode(String itemCode) {
+    this.itemCode = itemCode;
+  }
 
-    @Override
-    public String toString() {
-        return "OrderDetailPK{" +
-                "orderId='" + orderId + '\'' +
-                ", itemCode='" + itemCode + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "OrderDetailPK{" +
+        "orderId='" + orderId + '\'' +
+        ", itemCode='" + itemCode + '\'' +
+        '}';
+  }
 }

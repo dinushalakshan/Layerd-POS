@@ -1,19 +1,20 @@
 package dao;
 
-import entity.SuperEntity;
-
 import java.io.Serializable;
 import java.util.List;
 
-public interface CrudDAO <T extends SuperEntity,ID extends Serializable> extends SuperDAO {
+import entity.SuperEntity;
 
-    List<T> findAll();
+public interface CrudDAO <T extends SuperEntity,ID extends Serializable> extends SuperDAO{
 
-    T find(ID key);
+  List<T> findAll();
 
-    boolean save(T entity);
+  T find(ID key);
 
-    boolean update(T entity);
+  boolean save(T entity);
 
-    boolean delete(ID key);
+  boolean update(T entity);
+
+  boolean delete(ID key);
+
 }
