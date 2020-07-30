@@ -55,10 +55,10 @@ public class Item implements SuperEntity {
   @Override
   public String toString() {
     return "Item{" +
-        "code='" + code + '\'' +
-        ", description='" + description + '\'' +
-        ", unitPrice=" + unitPrice +
-        ", qtyOnHand=" + qtyOnHand +
-        '}';
+            "code='" + code + '\'' +
+            ", description='" + description + '\'' +
+            ", unitPrice=" + unitPrice +
+            ", qtyOnHand=" + qtyOnHand +
+            '}';
   }
 }
